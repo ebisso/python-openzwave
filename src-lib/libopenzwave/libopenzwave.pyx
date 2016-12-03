@@ -434,7 +434,9 @@ cdef addValueId(ValueID v, n):
         return
     logger.debug("addValueId : GetCommandClassId : %s, GetType : %s", v.GetCommandClassId(), v.GetType())
     cdef Manager *manager = GetManager()
-    values_map.insert(pair[uint64_t, ValueID](v.GetId(), v))
+    item = new pair[uint64_t, ValueID](v.GetId(), v)
+    values_map.insert(deref(item))
+    del item
     genre = PyGenres[v.GetGenre()]
     #handle basic value in different way
     if genre =="Basic":
